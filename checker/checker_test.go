@@ -11,30 +11,36 @@ import (
 
 func TestCheck(t *testing.T) {
 	fetcher := mockFetcher{}
-	checker := New(&fetcher)
+	checker := New(&fetcher, false)
+
+	checkerWithErrOnOverdue := New(&fetcher, true)
 	matcher := mockMatcher{}
 
 	testLines := []string{}
 	testLineCnt := 0
 
 	testData := []struct {
+		checker           *Checker
 		comment, filename string
 		todoErr           *checkerrors.TODO
 		err               error
 	}{
-		{"NotMatch", "", nil, nil},
-		{"NotValid", "test.go", checkerrors.MalformedTODOErr("test.go", testLines, testLineCnt), nil},
-		{"FailedFetch", "", nil, errors.New("")},
-		{"ClosedIssue", "test.go", checkerrors.IssueClosedErr("test.go", testLines, testLineCnt, "ClosedIssue"), nil},
-		{"NonExistentIssue", "test.go", checkerrors.IssueNonExistentErr("test.go", testLines, testLineCnt, "NonExistentIssue"), nil},
-		{"Valid", "", nil, nil},
+		{checker, "NotMatch", "", nil, nil},
+		{checker, "NotValid", "test.go", checkerrors.MalformedTODOErr("test.go", testLines, testLineCnt), nil},
+		{checker, "FailedFetch", "", nil, errors.New("")},
+		{checker, "ClosedIssue", "test.go", checkerrors.IssueClosedErr("test.go", testLines, testLineCnt, "ClosedIssue"), nil},
+		{checker, "NonExistentIssue", "test.go", checkerrors.IssueNonExistentErr("test.go", testLines, testLineCnt, "NonExistentIssue"), nil},
+		{checker, "Valid", "", nil, nil},
+
+		{checkerWithErrOnOverdue, "Valid", "", nil, nil},
+		{checkerWithErrOnOverdue, "Overdue", "test.go", checkerrors.IssueOverdueErr("test.go", testLines, testLineCnt, "Overdue"), nil},
 	}
 	for _, tt := range testData {
 		t.Run(tt.comment, func(t *testing.T) {
 
-			todoErr, err := checker.Check(matcher, tt.comment, tt.filename, testLines, testLineCnt)
+			todoErr, err := tt.checker.Check(matcher, tt.comment, tt.filename, testLines, testLineCnt)
 			if !reflect.DeepEqual(todoErr, tt.todoErr) {
-				t.Errorf("Expected toddErr to be %v, got %v", tt.todoErr, todoErr)
+				t.Errorf("Expected todoErr to be %v, got %v", tt.todoErr, todoErr)
 			}
 			if (err == nil) != (tt.err == nil) { // Don't care about the error string
 				t.Errorf("Expected err to be %v, got %v", tt.err, err)
@@ -94,5 +100,10 @@ func (f *mockFetcher) Fetch(taskID string) (taskstatus.TaskStatus, error) {
 	if taskID == "NonExistentIssue" {
 		return 3, nil
 	}
+
+	if taskID == "Overdue" {
+		return 4, nil
+	}
+
 	return 0, nil
 }

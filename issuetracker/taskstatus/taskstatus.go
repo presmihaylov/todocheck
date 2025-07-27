@@ -9,4 +9,5 @@ const (
 	Open
 	Closed
 	NonExistent
+	Overdue
 )

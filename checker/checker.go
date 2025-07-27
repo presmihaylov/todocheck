@@ -15,12 +15,16 @@ type Fetcher interface {
 
 // Checker for todo lines
 type Checker struct {
-	statusFetcher Fetcher
+	statusFetcher      Fetcher
+	shouldErrOnOverdue bool
 }
 
 // New checker
-func New(statusFetcher Fetcher) *Checker {
-	return &Checker{statusFetcher}
+func New(statusFetcher Fetcher, shouldErrOnOverdue bool) *Checker {
+	return &Checker{
+		statusFetcher:      statusFetcher,
+		shouldErrOnOverdue: shouldErrOnOverdue,
+	}
 }
 
 // Check if todo line is valid
@@ -55,6 +59,10 @@ func (c *Checker) Check(
 		return checkererrors.IssueClosedErr(filename, lines, linecnt, taskID), nil
 	case taskstatus.NonExistent:
 		return checkererrors.IssueNonExistentErr(filename, lines, linecnt, taskID), nil
+	case taskstatus.Overdue:
+		if c.shouldErrOnOverdue {
+			return checkererrors.IssueOverdueErr(filename, lines, linecnt, taskID), nil
+		}
 	}
 
 	return nil, nil
