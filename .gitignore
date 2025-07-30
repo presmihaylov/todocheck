@@ -1,3 +1,4 @@
 tmp/
 todocheck
 testing/authtokens.yaml
+.ccagent/
