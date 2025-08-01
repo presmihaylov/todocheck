@@ -13,6 +13,7 @@ func Test_Task_GetStatus(t *testing.T) {
 	t.Parallel()
 
 	overdueDate := Date(time.Now().Add(-24 * time.Hour))
+	todayDate := Date(time.Now().Truncate(time.Hour * 24))
 
 	var tests = []struct {
 		task Task
@@ -22,6 +23,7 @@ func Test_Task_GetStatus(t *testing.T) {
 		{Task{State: "open"}, taskstatus.Open},
 		{Task{State: "reopened"}, taskstatus.Open},
 		{Task{State: "open", DueDate: &overdueDate}, taskstatus.Overdue},
+		{Task{State: "open", DueDate: &todayDate}, taskstatus.Open},
 	}
 
 	for _, tt := range tests {

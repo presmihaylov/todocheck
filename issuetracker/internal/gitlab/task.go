@@ -42,7 +42,8 @@ func (t *Task) GetStatus() (taskstatus.TaskStatus, error) {
 	case "closed":
 		return taskstatus.Closed, nil
 	default:
-		if t.DueDate != nil && t.DueDate.AsTime().Before(time.Now()) {
+		todayDate := time.Now().Truncate(time.Hour * 24)
+		if t.DueDate != nil && t.DueDate.AsTime().Before(todayDate) {
 			return taskstatus.Overdue, nil
 		}
 		return taskstatus.Open, nil
