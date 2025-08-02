@@ -25,6 +25,7 @@ type Local struct {
 	CustomTodos          []string     `yaml:"custom_todos"`
 	Auth                 *Auth        `yaml:"auth"`
 	MatchCaseInsensitive bool         `yaml:"match_case_insensitive"`
+	ErrOnOverdue         bool         `yaml:"err_on_overdue"`
 }
 
 // NewLocal configuration from a given file path

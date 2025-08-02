@@ -15,6 +15,7 @@ const (
 	TODOErrTypeMalformed        TODOErrType = "Malformed todo"
 	TODOErrTypeIssueClosed      TODOErrType = "Issue is closed"
 	TODOErrTypeNonExistentIssue TODOErrType = "Issue doesn't exist"
+	TODOErrTypeOverdue          TODOErrType = "Issue is overdue"
 )
 
 // TODO encapsulates the todo error information
@@ -91,6 +92,18 @@ func IssueClosedErr(filename string, lines []string, linecnt int, issueID string
 func IssueNonExistentErr(filename string, lines []string, linecnt int, issueID string) *TODO {
 	return &TODO{
 		errType:  TODOErrTypeNonExistentIssue,
+		filename: filename,
+		lines:    lines,
+		linecnt:  linecnt,
+		metadata: map[string]string{
+			"issueID": issueID,
+		},
+	}
+}
+
+func IssueOverdueErr(filename string, lines []string, linecnt int, issueID string) *TODO {
+	return &TODO{
+		errType:  TODOErrTypeOverdue,
 		filename: filename,
 		lines:    lines,
 		linecnt:  linecnt,

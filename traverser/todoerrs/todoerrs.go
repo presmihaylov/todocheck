@@ -16,9 +16,9 @@ import (
 type TodoErrCallback func(todoerr *errors.TODO) error
 
 // NewTraverser for todo errors
-func NewTraverser(f *fetcher.Fetcher, ignoredPaths, customTodos []string, matchCaseInsensitive bool, callback TodoErrCallback) *Traverser {
+func NewTraverser(f *fetcher.Fetcher, ignoredPaths, customTodos []string, shouldErrOnOverdue bool, matchCaseInsensitive bool, callback TodoErrCallback) *Traverser {
 	return &Traverser{
-		comments.NewTraverser(ignoredPaths, commentsCallback(checker.New(f), customTodos, matchCaseInsensitive, callback)),
+		comments.NewTraverser(ignoredPaths, commentsCallback(checker.New(f, shouldErrOnOverdue), customTodos, matchCaseInsensitive, callback)),
 	}
 }
 
