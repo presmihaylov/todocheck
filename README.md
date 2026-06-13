@@ -1,3 +1,15 @@
+<p align="center">
+  <a href="https://nairi.ai">
+    <img src="https://nairi.ai/icon.png" alt="Nairi" height="48" />
+  </a>
+</p>
+
+<p align="center">
+  <sub>Sponsored by <a href="https://nairi.ai"><b>Nairi</b></a> — the AI agent platform for engineering teams.</sub>
+</p>
+
+---
+
 ![todocheck logo](images/todocheck-logo.png)
 # todocheck
 
