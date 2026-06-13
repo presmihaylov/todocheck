@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <sub>Sponsored by <a href="https://nairi.ai"><b>Nairi</b></a> — the AI agent platform for engineering teams.</sub>
+  <sub>Sponsored by <a href="https://nairi.ai"><b>Nairi</b></a> — shared AI agents your team can use in Slack or Discord.</sub>
 </p>
 
 ---
