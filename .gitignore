@@ -1,3 +1,5 @@
 tmp/
+binaries-custom_*/
 todocheck
 testing/authtokens.yaml
+.DS_Store
