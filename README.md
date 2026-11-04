@@ -1,3 +1,15 @@
+<p align="center">
+  <a href="https://nairi.ai">
+    <img src="https://nairi.ai/icon.png" alt="Nairi" height="48" />
+  </a>
+</p>
+
+<p align="center">
+  <sub>Sponsored by <a href="https://nairi.ai"><b>Nairi</b></a> — shared AI agents your team can use in Slack or Discord.</sub>
+</p>
+
+---
+
 ![todocheck logo](images/todocheck-logo.png)
 # todocheck
 
