@@ -58,7 +58,7 @@ func TestInvalidOrigins(t *testing.T) {
 			continue
 		}
 		errors := Validate(cfg, &mockIssueTracker{})
-		if 0 == len(errors) {
+		if len(errors) == 0 {
 			t.Errorf("%s should be invalid", path)
 		}
 	}
@@ -111,7 +111,7 @@ func TestInvalidAuthTypes(t *testing.T) {
 			continue
 		}
 		errors := Validate(cfg, &mockIssueTracker{})
-		if 0 == len(errors) {
+		if len(errors) == 0 {
 			t.Errorf("%s should be invalid", path)
 		}
 	}

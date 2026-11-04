@@ -17,7 +17,7 @@ func validateStandardTodoErrs(programOutput string, scenarios []*TodoErrScenario
 	return func() error {
 		chunks := common.RemoveEmptyTokens(strings.Split(programOutput, "\n\n"))
 		if len(chunks) != len(scenarios) {
-			return fmt.Errorf("Invalid amount of todo errors detected.\nExpected: %d, Actual: %d\n\n"+
+			return fmt.Errorf("invalid amount of todo errors detected.\nExpected: %d, Actual: %d\n\n"+
 				"(program output follows...)\n%s",
 				len(scenarios), len(chunks), programOutput)
 		}
@@ -26,7 +26,7 @@ func validateStandardTodoErrs(programOutput string, scenarios []*TodoErrScenario
 			j := indexOfMatchingTodoScenario(scenarios, chunks[i])
 			if j == -1 {
 				return fmt.Errorf(
-					"No matching todo detected in any of the scenarios"+
+					"no matching todo detected in any of the scenarios"+
 						"\n\nActual:\n%s\n\nRemaining scenarios:\n%s",
 					chunks[i], printScenarios(scenarios))
 			}
@@ -53,7 +53,7 @@ func validateJSONTodoErrs(programOutput string, scenarios []*TodoErrScenario) va
 		}
 
 		if len(elements) != len(scenarios) {
-			return fmt.Errorf("Invalid amount of todo errors detected.\nExpected: %d, Actual: %d\n\n"+
+			return fmt.Errorf("invalid amount of todo errors detected.\nExpected: %d, Actual: %d\n\n"+
 				"(program output follows...)\n%s",
 				len(scenarios), len(elements), programOutput)
 		}
@@ -69,7 +69,7 @@ func validateJSONTodoErrs(programOutput string, scenarios []*TodoErrScenario) va
 
 			if removeIdx == -1 {
 				return fmt.Errorf(
-					"No matching todo detected in any of the scenarios"+
+					"no matching todo detected in any of the scenarios"+
 						"\n\nActual:\n%+v\n\nRemaining scenarios:\n%s",
 					elem, printScenariosForJSON(scenarioJSONObjs))
 			}
@@ -101,7 +101,7 @@ func validateAuthTokensCache(tokensCache string, url, expectedToken string) vali
 		}
 
 		if authTokensCfg.Tokens[url] != expectedToken {
-			return fmt.Errorf("Expected auth token not found in tokens cache %s\n\nExpected: %s Actual: %s",
+			return fmt.Errorf("expected auth token not found in tokens cache %s\n\nExpected: %s Actual: %s",
 				tokensCache, expectedToken, authTokensCfg.Tokens[url])
 		}
 
