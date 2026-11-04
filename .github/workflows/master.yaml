@@ -21,8 +21,8 @@ jobs:
           version: v2.11.4
   build:
     runs-on: ubuntu-latest
-    # Fork code builds only after a maintainer adds 'safe to test', same as the tests job.
-    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'safe to test')
+    # PR code builds only on the event that adds 'safe to test', so a stale label can't run a later push.
+    if: github.event_name == 'push' || github.event.label.name == 'safe to test'
     needs: lint
     steps:
       - uses: actions/checkout@v6
@@ -37,7 +37,8 @@ jobs:
     runs-on: ubuntu-latest
 
     # https://securitylab.github.com/research/github-actions-preventing-pwn-requests/
-    if: contains(github.event.pull_request.labels.*.name, 'safe to test')
+    # Re-run after a new push by removing and re-adding the label.
+    if: github.event.label.name == 'safe to test'
     needs: lint
     steps:
       - uses: actions/checkout@v6
