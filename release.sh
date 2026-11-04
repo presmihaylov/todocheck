@@ -17,8 +17,8 @@ function create_build {
     fi
 
     BINARY=todocheck-$VERSION-$GOOS-$EXT
-    GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-X main.version=$VERSION" -o $DIR/$BINARY
-    cd $DIR && shasum -a 256 $BINARY > $BINARY.sha256 && cd ..
+    GOOS=$GOOS GOARCH=$GOARCH go build -ldflags="-X main.version=$VERSION" -o "$DIR/$BINARY" || exit 1
+    (cd "$DIR" && shasum -a 256 "$BINARY" > "$BINARY.sha256")
 }
 
 mkdir -p $DIR
