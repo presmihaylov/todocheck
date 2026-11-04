@@ -10,7 +10,7 @@ import (
 	"github.com/preslavmihaylov/todocheck/authmanager/authstore"
 	"github.com/preslavmihaylov/todocheck/config"
 	"github.com/preslavmihaylov/todocheck/issuetracker"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
 
 const (
@@ -67,8 +67,8 @@ func acquireToken(authCfg *config.Auth, tokenKey string, instructions string) er
 // https://github.com/golang/go/issues/19909#issuecomment-399409958
 func readPassword() ([]byte, error) {
 	fd := int(syscall.Stdin)
-	if terminal.IsTerminal(fd) {
-		return terminal.ReadPassword(fd)
+	if term.IsTerminal(fd) {
+		return term.ReadPassword(fd)
 	}
 
 	reader := bufio.NewReader(os.Stdin)
