@@ -49,6 +49,21 @@ jobs:
           # Fork code runs here only after a maintainer adds 'safe to test'.
           allow-unsafe-pr-checkout: true
       - name: Run tests
+        # Tracker integration tests need live API tokens and run in their own job below.
+        run: make build && go test -v -count=1 -skip 'Integration' ./...
+  integration-tests:
+    runs-on: ubuntu-latest
+    # Not a required check: its secrets date from 2020-2022 and several services 401 or are shut down.
+    if: github.event.label.name == 'safe to test'
+    needs: lint
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          persist-credentials: false
+          allow-unsafe-pr-checkout: true
+      - name: Run integration tests
         env:
           TODOCHECK_ENV: "ci"
           TESTS_GITHUB_APITOKEN: ${{ secrets.TESTS_GITHUB_APITOKEN }}
@@ -58,4 +73,4 @@ jobs:
           TESTS_REDMINE_PRIVATE_APITOKEN: ${{ secrets.TESTS_REDMINE_PRIVATE_APITOKEN }}
           TESTS_YOUTRACK_PUBLIC_INCLOUD_APITOKEN: ${{ secrets.TESTS_YOUTRACK_PUBLIC_INCLOUD_APITOKEN }}
           TESTS_AZUREBOARDS_PRIVATE_APITOKEN: ${{ secrets.TESTS_AZUREBOARDS_PRIVATE_APITOKEN }}
-        run: make test
+        run: make build && go test -v -count=1 -run 'Integration' ./...
